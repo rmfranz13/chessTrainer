@@ -6,16 +6,14 @@ The first 10 to 20 games might feel absurdly easy, and you might question whethe
 
 While most chess engines are effectively "perfect" for practical purposes, this engine will expose you to *all possible chess players* that are roughly the same distance from "perfect" as you are. It's hard to imagine a more effective method of learning.
 
-I have been playing chess for years, and this has engine has taught me the following valuable lessons, in the following order
-1. The real value of king safety.
-1. The value of material -- only as a means of attacking or protecting the king.
-1. How to build up pressure on the enemy king in the opening and middle game.
-1. Common shapes and structures: multi-piece arrangements that act together in a reliable way, such as a bishop and pawn co-protecting eachother, or battering ram with queen and rook.
-1. Tactics and end game strategy.
-1. Opening mistakes (and traps).
-1. Building up pressure in the opening that isn't obviously king-focussed.
-1. Balance and pacing (when sometimes a slow pace is a good idea), especially in complex situations. When to play elsewhere.
-1. Risk taking. The now-rewardable practice of saying "you know what I'm just gonna do some bat sh*t crazy thing here and see how that goes."
+I have been playing chess for years, and this engine is teaching me the following lessons in a way I was not getting elsewhere:
+1. Respect for the game, and not playing poorly against what appears to be a weak opponent.
+1. The value of king safety.
+1. The value, or lack thereof, of material -- it's only valuable as a means of attacking or protecting the king.
+1. How to build up pressure in the opening and middle game.
+1. Tactics. The engine will be surprisingly good at tactics compared to it's apparent strategic understanding.
+1. Balance and pacing... when sometimes a slow pace is a good idea, especially in complex situations, and when to take a break from the main battle and play or react to pressures elsewhere.
+1. Risk taking. The now-rewardable practice of saying "you know what I'm just gonna do some bat sh*t crazy thing here and see how that goes." The engine will do this against you and succeed, and you'll learn to return the favor.
 1. Most importantly, the engine shows you what you don't know about chess. It is excellent at finding your misconceptions and presenting them to you on a silver platter.
 
 
