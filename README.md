@@ -24,3 +24,15 @@ From a windows terminal where python and pip is accessible
 pip install -r requirements.txt
 python do_chess.py
 ```
+If all goes according to plan, you should be greeted with a welcome message (mostly the same info in this readme), clicking OK, you should see in the terminal the 13 layers of the neural network having noise applied, then a GUI will pop up that randomly selects you to either play black or white. If black, the engine will immediately start playing (might take a minute... while the engine is thinking you can't move or edit the GUI window, a known limitation). There is no timer and the only options you have besides playing chess moves is to resign or force the engine to resign. This is intended to remove unneeded complixity with options around search depth and thinking time. Making the engine resign is an honesty-policy thing or could be used to see what the engine is like on much stronger levels... using the engine resign to amass fake wins to put you at a too-strong of a level, I would adivse against using the button at all however. The engine should move within 10 seconds or less. It goes to a search depth of 6 moves, which when playing against the unaltered network is enough to be superhuman (and hopefully fast enough to be usalbe on most modern hardware).
+
+Once the game is over, either by checkmate, resignation, or one of the many possible draw conditions, it will automatically be saved. 
+
+To play the next game simply re-run 
+```
+python do_chess.py
+```
+
+(assuming you win the first game because it will be playing quite terribly), you will now be greeted with a plot showing your progress over time. This behavior will continue from hence forth. You can restart by deleting all the games (you'll get a message indicating which folder they're saved in, and you can't save more than 1000 games simply from the naming format... this shouldn't be a blocker, simply delete the games and start again if you manage to play 1000 games). 
+
+At the start, you're likely to face at least 10, if not more, random-like opponents in a row before the engine starts showing any signs of what we might consider "thinking". Don't get thrown off by this however. Your first loss is likely to be against an opponent you consider to still be playing terribly, but will catch you making the natural human mistake of playing down to your opponent. That's why the first lesson I listed is respect for the game which we inevitably lack in human games. The reason it will catch you off guard is because it seems to become proficient at chess tactics and check mates far before it arrives at more standard looking strategies like controlling the center and castling (this should make sense if you think about it... it's piecing together good chess play from the ground up, starting with obvious things like looking for check mates and big tactics).
