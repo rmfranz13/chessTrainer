@@ -13,5 +13,14 @@ I have been playing chess for years, and this has engine has taught me the follo
 1. Chess is a much more open-ended and freely-flowing game than I thought. Playing against standard engines, you'll quickly get stuck playing a strategy you're not good enough to play. This engine has taught me to be comfortable saying "ehh... I'm just gonna do some bat sh*t crazy thing and go off the rails here"... but to actually understand when's a good time, for me personally, to do something like.
 1. Most importantly, the engine shows you what you don't know about chess. It is the most excellent teacher I've seen at finding your misconceptions and presenting them to you on a silver platter. Think you should win because you castled and your opponent did not? Well, sure, if you're good enough to take advantage of something like that. This engine will precisely answer for you what strategies you're good enough to take advantage of.
 
-d
+
+# Requirements: 
+
+For now, this requires you have Python3 on a Windows machine. Typing "python" at the windows terminal should put you in an interactive python 3 session (powershell or cmd or 3rd party terminal such as might come with python or anaconda)
+
 # How to run:
+From a windows terminal where python and pip is accessible
+```
+pip install -r requirements.txt
+python do_chess.py
+```
