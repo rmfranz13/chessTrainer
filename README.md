@@ -19,21 +19,28 @@ I have been playing chess for years, and this engine is teaching me the followin
 
 # Requirements: 
 
-For now, this requires you have Python3 on a Windows machine. Typing "python" at the windows terminal should put you in an interactive python 3 session (powershell or cmd or 3rd party terminal such as might come with python or anaconda)
+For now, this requires you have Python3 and git on a Windows machine. Typing "python" at the windows terminal should put you in an interactive python 3 session (powershell or cmd or 3rd party terminal such as might come with python or anaconda). Similarly "git" should be an accessible command from the same terminal.
+
+# Initial setup:
+Simply clone this repo and pip install the dependencies (there's only 2: python-chess for the chess-playing logic and certain aspects of the chess GUI, and protobuf which is needed to read and apply noise to the network weights for each game).
+```
+git clone https://github.com/rmfranz13/chessTrainer.git
+pip install -r requirements.txt
+```
 
 # How to run:
-From a windows terminal where python and pip is accessible
+Now each game will be kicked off simply by calling do_chess.py:
 ```
-pip install -r requirements.txt
 python do_chess.py
 ```
-If all goes according to plan, you should be greeted with a welcome message (mostly the same info in this readme), clicking OK, you should see in the terminal the 13 layers of the neural network having noise applied, then a GUI will pop up that randomly selects you to either play black or white. If black, the engine will immediately start playing (might take a minute... while the engine is thinking you can't move or edit the GUI window, a known limitation). There is no timer and the only options you have besides playing chess moves is to resign or force the engine to resign. This is intended to remove unneeded complixity with options around search depth and thinking time. Making the engine resign is an honesty-policy thing or could be used to see what the engine is like on much stronger levels... using the engine resign to amass fake wins to put you at a too-strong of a level, I would adivse against using the button at all however. The engine should move within 10 seconds or less. It goes to a search depth of 6 moves, which when playing against the unaltered network is enough to be superhuman (and hopefully fast enough to be usalbe on most modern hardware).
 
-Once the game is over, either by checkmate, resignation, or one of the many possible draw conditions, it will automatically be saved. 
+If all goes according to plan, you should be greeted with a welcome message (mostly the same info in this readme), clicking OK, you should see in the terminal the 13 layers of the neural network having noise applied, this may take a few seconds, then a GUI will pop up that randomly selects you to either play black or white. If black, the engine will immediately start playing (might take a minute to load the engine and calculate the move, but shouldn't take more than 10 seconds for subsequent moves). There is no timer and the only options you have besides playing chess moves is to resign or force the engine to resign. This is intended to remove unneeded complixity with options around search depth and thinking time. There are no take-backs, no analysis, no time limit for you. The point is simply to play chess. The games are saved, and you'll see a message indicating where, and you can look at them manually if desired, but the spirit of this trainer is simply to pit you against as many interesting opponents as possible, each opponent (once you find your approximate skill range) having something unique to teach you.
+
+Once the game is over, either by checkmate, resignation, or one of the many possible draw conditions, it will automatically be saved and the window will close.
 
 To play the next game simply re-run 
 ```
 python do_chess.py
 ```
 
-(assuming you win the first game because it will be playing quite terribly), you will now be greeted with a plot showing your progress over time. This behavior will continue from hence forth. You can restart by deleting all the games (you'll get a message indicating which folder they're saved in, and you can't save more than 1000 games simply from the naming format... this shouldn't be a blocker, simply delete the games and start again if you manage to play 1000 games). 
+This time, the level of noise added to the network will be adjusted based on the result of your previous game, making for a better opponent if you won, or a worse opponent if you lost. This cycle repeats indefinitely, and a plot will open with each new game showing the progress you've made.

@@ -1,0 +1,4 @@
+game_*.pgn
+progression.pgn
+__pycache__
+RyanTrainer/weights.pb
