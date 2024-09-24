@@ -10,6 +10,7 @@ I have been playing chess for years, and this has engine has taught me the follo
 1. The real value of king safety.
 1. The value of material -- only as a means of attacking or protecting the king.
 1. How to build up pressure on the enemy king in the opening and middle game.
+1. Common shapes and structures: multi-piece arrangements that act together in a reliable way, such as a bishop and pawn co-protecting eachother, or battering ram with queen and rook.
 1. Tactics and end game strategy.
 1. Opening mistakes (and traps).
 1. Building up pressure in the opening that isn't obviously king-focussed.
