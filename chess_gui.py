@@ -347,7 +347,7 @@ class ChessGUI:
             else:
                 messagebox.showinfo("Reset Progress", "No games found to delete.")
         else:
-            messagebox.showinfo("Reset Progress", "Progress reset canceled.")
+            messagebox.showinfo("Reset Progress", "Progress reset canceled, your games are safe.")
 
     def on_closing(self):
         self.engine.quit()
