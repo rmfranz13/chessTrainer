@@ -54,6 +54,10 @@ class ChessGUI:
         self.engine_resign_button = tk.Button(self.control_frame, text="Force Engine to Resign", command=self.engine_resign)
         self.engine_resign_button.pack(pady=5)
 
+        # Reset Progress button
+        self.reset_button = tk.Button(self.control_frame, text="Reset Progress", command=self.reset_progress)
+        self.reset_button.pack(pady=5)
+
     def update_board(self):
         self.canvas.delete("all")
         colors = ["#F0D9B5", "#B58863"]  # Light and dark squares
@@ -213,8 +217,8 @@ class ChessGUI:
         if self.board.is_game_over():
             return
 
-        # Use fixed depth of 5 and time limit of 10 seconds
-        limit = chess.engine.Limit(depth=5, time=10)
+        # Use fixed depth of 7 and time limit of 10 seconds
+        limit = chess.engine.Limit(depth=7, time=10)
 
         result = self.engine.play(self.board, limit)
         self.board.push(result.move)
@@ -273,8 +277,23 @@ class ChessGUI:
         next_index = max(indices) + 1 if indices else 0
 
         if next_index > 999:
-            messagebox.showwarning("Save Game", "Game index has reached 999. Please clear the games folder.")
-            return
+            # Offer to archive the games
+            answer = messagebox.askyesno("Game Limit Reached", "You have reached the 1000-game limit. Would you like to archive your games?")
+            if answer:
+                # Archive the games
+                archive_folder_name = "archive_" + time.strftime("%Y_%m_%d_%H_%M_%S")
+                archive_folder = os.path.join(os.getcwd(), "RyanTrainer", archive_folder_name)
+                os.makedirs(archive_folder, exist_ok=True)
+                for filename in existing_files:
+                    src_path = os.path.join(games_folder, filename)
+                    dst_path = os.path.join(archive_folder, filename)
+                    os.rename(src_path, dst_path)
+                messagebox.showinfo("Archive Games", f"Your games have been archived to {archive_folder}. Your progress has been reset.")
+                # Reset next_index to 0
+                next_index = 0
+            else:
+                messagebox.showinfo("Game Not Saved", "Your game was not saved. Please reset your progress to save new games.")
+                return
 
         filename = f"game_{next_index:03d}.pgn"
         file_path = os.path.join(games_folder, filename)
@@ -313,6 +332,22 @@ class ChessGUI:
 
         messagebox.showinfo("Save Game", f"Game automatically saved to {file_path}")
         self.game_result = None  # Reset the game result after saving
+
+    def reset_progress(self):
+        answer = messagebox.askyesno("Reset Progress", "Are you sure you want to reset your progress? This will delete all saved games.", icon='warning')
+        if answer:
+            games_folder = os.path.join(os.getcwd(), "RyanTrainer", "games")
+            if os.path.exists(games_folder):
+                # Delete all files in the games folder
+                for filename in os.listdir(games_folder):
+                    file_path = os.path.join(games_folder, filename)
+                    if os.path.isfile(file_path):
+                        os.remove(file_path)
+                messagebox.showinfo("Reset Progress", "Your progress has been reset.")
+            else:
+                messagebox.showinfo("Reset Progress", "No games found to delete.")
+        else:
+            messagebox.showinfo("Reset Progress", "Progress reset canceled.")
 
     def on_closing(self):
         self.engine.quit()
