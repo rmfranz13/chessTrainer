@@ -194,7 +194,13 @@ That is why this training program is designed as it is. There is no time limit f
     root.destroy()
 else:
     # Os call to show the plot:
-    os.system('start progression.png')
+    #os.system('start progression.png')
+    # Display a message box indicating your current level.
+
+    root = tk.Tk()
+    root.withdraw()
+    messagebox.showinfo("Level", "You are currently at level " + str(level) + ". Good luck!")
+    root.destroy()
 
 def noise_converter(level_in):
     return(np.exp((-level_in * 0.1535056728662697) - 3.8376418216567423))

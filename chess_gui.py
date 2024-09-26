@@ -6,6 +6,7 @@ import chess.pgn
 import os
 import time
 import argparse
+from PIL import Image, ImageTk
 
 class ChessGUI:
     def __init__(self, master, player_color):
@@ -57,6 +58,31 @@ class ChessGUI:
         # Reset Progress button
         self.reset_button = tk.Button(self.control_frame, text="Reset Progress", command=self.reset_progress)
         self.reset_button.pack(pady=5)
+
+        # Show Progress button
+        self.show_progress_button = tk.Button(self.control_frame, text="Show Progress", command=self.show_progress)
+        self.show_progress_button.pack(pady=5)
+
+        # Check if progression.png exists and games folder is not empty
+        self.check_progress_availability()
+
+    def check_progress_availability(self):
+        # Path to progression.png
+        self.progression_image_path = os.path.join(os.getcwd(), "progression.png")
+        # Path to games folder
+        self.games_folder = os.path.join(os.getcwd(), "RyanTrainer", "games")
+
+        # Check if progression.png exists and games folder is not empty
+        if os.path.exists(self.progression_image_path) and os.path.exists(self.games_folder):
+            if os.listdir(self.games_folder):
+                # Enable the Show Progress button
+                self.show_progress_button.config(state=tk.NORMAL)
+            else:
+                # Disable the Show Progress button
+                self.show_progress_button.config(state=tk.DISABLED)
+        else:
+            # Disable the Show Progress button
+            self.show_progress_button.config(state=tk.DISABLED)
 
     def update_board(self):
         self.canvas.delete("all")
@@ -291,6 +317,8 @@ class ChessGUI:
                 messagebox.showinfo("Archive Games", f"Your games have been archived to {archive_folder}. Your progress has been reset.")
                 # Reset next_index to 0
                 next_index = 0
+                # Update the Show Progress button
+                self.check_progress_availability()
             else:
                 messagebox.showinfo("Game Not Saved", "Your game was not saved. Please reset your progress to save new games.")
                 return
@@ -333,6 +361,9 @@ class ChessGUI:
         messagebox.showinfo("Save Game", f"Game automatically saved to {file_path}")
         self.game_result = None  # Reset the game result after saving
 
+        # Update the Show Progress button
+        self.check_progress_availability()
+
     def reset_progress(self):
         answer = messagebox.askyesno("Reset Progress", "Are you sure you want to reset your progress? This will delete all saved games.", icon='warning')
         if answer:
@@ -344,10 +375,30 @@ class ChessGUI:
                     if os.path.isfile(file_path):
                         os.remove(file_path)
                 messagebox.showinfo("Reset Progress", "Your progress has been reset.")
+                # Update the Show Progress button
+                self.check_progress_availability()
             else:
                 messagebox.showinfo("Reset Progress", "No games found to delete.")
         else:
-            messagebox.showinfo("Reset Progress", "Progress reset canceled, your games are safe.")
+            messagebox.showinfo("Reset Progress", "Progress reset canceled.")
+
+    def show_progress(self):
+        # Open a new window to display the progression image
+        try:
+            progress_window = tk.Toplevel(self.master)
+            progress_window.title("Progression")
+
+            # Load the image
+            image = Image.open(self.progression_image_path)
+            photo = ImageTk.PhotoImage(image)
+
+            # Create a label to display the image
+            label = tk.Label(progress_window, image=photo)
+            label.image = photo  # Keep a reference to prevent garbage collection
+            label.pack()
+
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to display progression image: {e}")
 
     def on_closing(self):
         self.engine.quit()
