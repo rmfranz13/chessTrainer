@@ -6,6 +6,8 @@ This is to address some of the problems I see as being introduced by standard ch
 
 The approach I'm intending here is fundamentally different, and teaches you chess the same way as a neural network like Leela Chess Zero (and hey, neural network? you have one of those: your brain).
 
+One word of advice: Actively try to mimick what it's showing you. Don't just try to beat it, try to beat it in it's own weird style. For instance, it may appear to be weirdly good at check mates despite being terrible in the opening. That's a signal to you: if you focus more on check mates, to be more like the AI, you will improve your game.
+
 # Requirements: 
 
 For now, this requires you have Python3 and git on a Windows machine. Typing "python" at the windows terminal should put you in an interactive python 3 session (powershell or cmd or 3rd party terminal such as might come with python or anaconda). Similarly "git" should be an accessible command from the same terminal.
