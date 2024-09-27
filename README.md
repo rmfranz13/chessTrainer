@@ -4,7 +4,7 @@ Train yourself in chess the same way super-human AI (LeelaChessZero) is trained,
 
 This is to address some of the problems I see as being introduced by standard chess engines like Stock Fish. In the grand scheme of the history of Chess, super-human chess engines are a relatively recent invention. The ability to pull out the super-human chess engine in your phone and analyze your games is at best going to help you realize you aren't superhuman, and at worst teach you strategies that you aren't ready for. Practicing against traditional chess engines like Stock Fish will punish risk taking and exploration and beat you into a pattern of being as conservative as possible, trying to last as long as possible without making a mistake. There isn't a good way to make a traditional chess engine play to your level except for handicapping it materially, or by having it make intentionally bad moves. These approaches put you in unnatural positions that aren't going to teach you much.
 
-This approach is fundamentally different, and teaches you chess the same way as a neural network like Leela Chess Zero (and hey, neural network? you have one of those: your brain).
+The approach I'm intending here is fundamentally different, and teaches you chess the same way as a neural network like Leela Chess Zero (and hey, neural network? you have one of those: your brain).
 
 # How does it work?
 
