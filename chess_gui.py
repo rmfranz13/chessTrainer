@@ -7,6 +7,9 @@ import os
 import time
 import argparse
 from PIL import Image, ImageTk
+import threading
+import concurrent.futures
+
 
 class ChessGUI:
     def __init__(self, master, player_color):
@@ -23,6 +26,9 @@ class ChessGUI:
         self.engine = chess.engine.SimpleEngine.popen_uci(self.engine_path)
         self.engine.configure({"Threads": 2})  # Adjust as needed
 
+        # Initialize ThreadPoolExecutor with one worker thread
+        self.executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+
         # Variables to track user interaction
         self.selected_square = None
         self.player_color = chess.WHITE if player_color.lower() == "white" else chess.BLACK
@@ -38,6 +44,7 @@ class ChessGUI:
         # If player is black, make the engine move immediately
         if self.player_color == chess.BLACK:
             self.master.after(100, self.engine_move)
+            threading.Thread(target=self.engine_move).start()
 
     def create_widgets(self):
         self.canvas = tk.Canvas(self.master, width=512, height=512)
@@ -120,7 +127,7 @@ class ChessGUI:
                 if square == from_square or square == to_square:
                     color = highlight_color  # Highlight squares involved in the last move
                 else:
-                    color = colors[(file + rank) % 2]  # Normal square color
+                    color = colors[(file + rank + 1) % 2]  # Normal square color
 
                 self.canvas.create_rectangle(x1, y1, x2, y2, fill=color, tags="square")
 
@@ -243,12 +250,24 @@ class ChessGUI:
         if self.board.is_game_over():
             return
 
-        # Use fixed depth of 7 and time limit of 10 seconds
-        limit = chess.engine.Limit(depth=7, time=10)
+        # This function will run in a separate thread
+        def perform_engine_move():
+            limit = chess.engine.Limit(depth=7, time=10)
+            result = self.engine.play(self.board, limit)
+            return result.move
 
-        result = self.engine.play(self.board, limit)
-        self.board.push(result.move)
-        self.update_board()
+        # This function will be called on the main thread after the engine move is made
+        def after_move(future):
+            move = future.result()
+            self.board.push(move)
+            self.update_board()
+
+        # Submit the engine move to the executor
+        future = self.executor.submit(perform_engine_move)
+        # Add a callback to update the GUI after the move is done
+        future.add_done_callback(lambda f: self.master.after(0, after_move, f))
+
+
 
     def check_game_over(self):
         if self.board.is_checkmate():
@@ -401,6 +420,7 @@ class ChessGUI:
             messagebox.showerror("Error", f"Failed to display progression image: {e}")
 
     def on_closing(self):
+        self.executor.shutdown(wait=False)
         self.engine.quit()
         self.master.destroy()
 
