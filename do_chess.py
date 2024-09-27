@@ -199,7 +199,7 @@ else:
 
     root = tk.Tk()
     root.withdraw()
-    messagebox.showinfo("Level", "You are currently at level " + str(level) + ". Good luck!")
+    messagebox.showinfo("Level", "You are currently at level " + str(level) + " out of 100. Good luck!")
     root.destroy()
 
 def noise_converter(level_in):
