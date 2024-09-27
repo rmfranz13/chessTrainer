@@ -24,7 +24,8 @@ class ChessGUI:
             exit()
 
         self.engine = chess.engine.SimpleEngine.popen_uci(self.engine_path)
-        self.engine.configure({"Threads": 2})  # Adjust as needed
+        self.engine.configure({"Threads": 3})  # Adjust as needed
+        self.board_lock = threading.Lock() 
 
         # Initialize ThreadPoolExecutor with one worker thread
         self.executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
@@ -152,50 +153,51 @@ class ChessGUI:
         if self.board.turn != self.player_color:
             return  # Not player's turn
 
-        square_size = 64
-        col = event.x // square_size
-        row = event.y // square_size
+        with self.board_lock:
+            square_size = 64
+            col = event.x // square_size
+            row = event.y // square_size
 
-        if self.board_flipped:
-            file = 7 - col
-            rank = row
-        else:
-            file = col
-            rank = 7 - row
-
-        square = chess.square(file, rank)
-
-        if self.selected_square is None:
-            piece = self.board.piece_at(square)
-            if piece and piece.color == self.board.turn and piece.color == self.player_color:
-                self.selected_square = square
-                self.highlight_square(square)
-        else:
-            piece = self.board.piece_at(self.selected_square)
-            move = chess.Move(self.selected_square, square)
-
-            # Check for pawn promotion
-            if piece and piece.piece_type == chess.PAWN:
-                target_rank = chess.square_rank(square)
-                if (piece.color == chess.WHITE and target_rank == 7) or \
-                   (piece.color == chess.BLACK and target_rank == 0):
-                    # Pawn promotion
-                    promotion_piece_type = self.prompt_promotion()
-                    if promotion_piece_type is None:
-                        # User cancelled promotion
-                        self.selected_square = None
-                        self.update_board()
-                        return
-                    move = chess.Move(self.selected_square, square, promotion=promotion_piece_type)
-
-            if move in self.board.legal_moves:
-                self.board.push(move)
-                self.update_board()
-                self.selected_square = None
-                self.master.after(100, self.engine_move)
+            if self.board_flipped:
+                file = 7 - col
+                rank = row
             else:
-                self.selected_square = None
-                self.update_board()
+                file = col
+                rank = 7 - row
+
+            square = chess.square(file, rank)
+
+            if self.selected_square is None:
+                piece = self.board.piece_at(square)
+                if piece and piece.color == self.board.turn and piece.color == self.player_color:
+                    self.selected_square = square
+                    self.highlight_square(square)
+            else:
+                piece = self.board.piece_at(self.selected_square)
+                move = chess.Move(self.selected_square, square)
+
+                # Check for pawn promotion
+                if piece and piece.piece_type == chess.PAWN:
+                    target_rank = chess.square_rank(square)
+                    if (piece.color == chess.WHITE and target_rank == 7) or \
+                        (piece.color == chess.BLACK and target_rank == 0):
+                        # Pawn promotion
+                        promotion_piece_type = self.prompt_promotion()
+                        if promotion_piece_type is None:
+                            # User cancelled promotion
+                            self.selected_square = None
+                            self.update_board()
+                            return
+                        move = chess.Move(self.selected_square, square, promotion=promotion_piece_type)
+
+                if move in self.board.legal_moves:
+                    self.board.push(move)
+                    self.update_board()
+                    self.selected_square = None
+                    threading.Thread(target=self.engine_move).start()  # Use threading to call engine_move
+                else:
+                    self.selected_square = None
+                    self.update_board()
 
     def highlight_square(self, square):
         square_size = 64
@@ -252,20 +254,32 @@ class ChessGUI:
 
         # This function will run in a separate thread
         def perform_engine_move():
-            limit = chess.engine.Limit(depth=7, time=10)
-            result = self.engine.play(self.board, limit)
-            return result.move
+            try:
+                limit = chess.engine.Limit(depth=7, time=10)
+                result = self.engine.play(self.board, limit)
+                return result.move
+            except chess.engine.EngineError as e:
+                print(f"Engine error: {e}")
+                return None
+
 
         # This function will be called on the main thread after the engine move is made
         def after_move(future):
-            move = future.result()
-            self.board.push(move)
-            self.update_board()
+            try:
+                move = future.result()  # Get the result of the future
+                with self.board_lock:  # Ensure thread safety when accessing the board
+                    if move in self.board.legal_moves:  # Check if move is still legal
+                        self.board.push(move)
+                        self.update_board()
+                    else:
+                        print("Move is no longer legal. Skipping the engine move.")
+            except Exception as e:
+                print(f"Error handling engine move: {e}")
 
-        # Submit the engine move to the executor
-        future = self.executor.submit(perform_engine_move)
-        # Add a callback to update the GUI after the move is done
-        future.add_done_callback(lambda f: self.master.after(0, after_move, f))
+        # Acquire the lock before making an engine move
+        with self.board_lock:
+            future = self.executor.submit(perform_engine_move)
+            future.add_done_callback(lambda f: self.master.after(0, after_move, f))
 
 
 
