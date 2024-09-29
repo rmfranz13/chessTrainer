@@ -45,7 +45,7 @@ class ChessGUI:
         # If player is black, make the engine move immediately
         if self.player_color == chess.BLACK:
             self.master.after(100, self.engine_move)
-            threading.Thread(target=self.engine_move).start()
+            #threading.Thread(target=self.engine_move).start()
 
     def create_widgets(self):
         self.canvas = tk.Canvas(self.master, width=512, height=512)
