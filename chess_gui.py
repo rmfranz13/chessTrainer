@@ -57,11 +57,11 @@ class ChessGUI:
         self.control_frame.pack(side=tk.RIGHT, fill=tk.BOTH)
 
         # Resign buttons
-        self.resign_button = tk.Button(self.control_frame, text="Resign", command=self.player_resign)
-        self.resign_button.pack(pady=5)
+        #self.resign_button = tk.Button(self.control_frame, text="Resign", command=self.player_resign)
+        #self.resign_button.pack(pady=5)
 
-        self.engine_resign_button = tk.Button(self.control_frame, text="Force Engine to Resign", command=self.engine_resign)
-        self.engine_resign_button.pack(pady=5)
+        #self.engine_resign_button = tk.Button(self.control_frame, text="Force Engine to Resign", command=self.engine_resign)
+        #self.engine_resign_button.pack(pady=5)
 
         # Reset Progress button
         self.reset_button = tk.Button(self.control_frame, text="Reset Progress", command=self.reset_progress)
