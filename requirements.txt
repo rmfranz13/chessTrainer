@@ -1,2 +1,3 @@
 protobuf==3.20
 python-chess
+matplotlib
