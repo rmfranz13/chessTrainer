@@ -168,39 +168,25 @@ plt.close()
 if(len(indices) == 1):
     root = tk.Tk()
     root.withdraw()
-    messagebox.showinfo("Welcome", """Welcome to the chess trainer! There are 100 levels and you start off on level 0, which effectively represents 
-pure random play. Winning a game moves you up 2 levels, losing a game moves you down 1 level, a draw moves you up 1 level. Level 100 is an unaltered version 
-of LeelaZero Chess engine, which is far superhuman. Each "level" represents an amount of noise added to this super human network such that it roughly achieves 
-a particular level of play (for instance, pure random play at level 0). Every opponent is generated uniquely for the game at hand, so there are no guarantees 
-about the sort of opponent you'll be facing, and that's the point. Because you move up 2 points for a win and down 1 point for a loss, you'll on average face off 
-against slightly stronger opponents than you, which is good incentive for practice: you have a shot of winning, your opponents won't be indestructable, but they'll
-tend to be a step ahead on the average. 
+    messagebox.showinfo("Welcome", """Welcome to the chess trainer! There are 100 levels and you start off on level 0, which effectively represents pure random play. Winning a game moves you up 2 levels, losing a game moves you down 1 level, a draw moves you up 1 level. Level 100 is an unaltered version of Leela Chess Zero engine, which is far superhuman. Each "level" represents an amount of noise added to this super human network such that it roughly achieves a particular level of play. Every opponent is generated uniquely for the game at hand, so there are no guarantees about the sort of opponent you'll be facing, and that's the point. This includes playing strength. Winning a game doesn't guarantee your next opponent will be stronger, but on average it does mean you'll be facing a more Leela Chess Zero-like opponent (which tends to make it stronger). Because you move up 2 levels for a win and down 1 level for a loss, once you find your sweet spot you'll on average face off against slightly stronger opponents than yourself, which is how you naturally improve: you always have a shot of winning, your opponents won't be indestructable, but they'll tend to be a step ahead on the average. 
 
-Since you're starting off on level 0, you'll start off with some very easy games. You'll notice it improving skill level however as you move up the ladder, eventually 
-putting you in a realm where you're roughly winning 1/3 of the time.
+Since you're starting off on level 0, you'll start off with some very easy games. For me it takes around 20 easy games before the engine starts beating me. You'll notice it improving skills as you move up, although the skills might improve in a way that surprises you. Take note of what it seems surprisingly good at, because it's probably not an accident. If it seems like it's too good at check mate sequences given how terrible it's opening is, that's because check mate sequences are so deeply engrained in the super-human network that it's the last good strategy remaining after everything else has been flushed out. That's a major sign that you can improve your game by focussing on, say, checkmate sequences... or whatever it seems weirdly good at. And playing against this trainer is exactly how you can focus on those areas.
 
-I decided to start off easy and make it harder because it's good to get a few wins under your belt and get a feel for how the strength progresses.
+It turns out most humans, myself included (especially myself), actually have no idea how to play chess. We don't know what's actually important, what the game plan is, why we ought to control the center of the board and castle and capture material. We play strategies that have been passed down by the few human masters who actually had a clue. This trainer will teach you what those masters couldn't, even if they could sit down with you and play teaching games with you all day. It starts from nothing, random play, and builds up chess strategy in the correct order until it's superhuman, showing you at each step along the way exactly what it is you should be focussing on.
+
+That is why this training program is designed as it is. There is no time limit, there are no take-backs, no analysis. There's just playing full games of chess, on a board, start to finish, the old fashioned way, where nobody knows the answers and mistakes have consequences.
+
+There's no resigning either. You can't be respectful to the AI and where's the lesson in rage-quitting? That being said, you can always rage-quit by simply exiting out, but progress won't be made.
+
+Clicking "Ok" here will kick off the initial process of adding noise to the network to give you your first opponent. It will take a minute, printing out the 13 layers of the network which are having noise applied, before opening the chess GUI.
+
+Subsequent games should be kicked off the same as this first game, but you won't see this message again (thankfully).
+
+You can view a graph of your progress with the "show progress" button once the chess GUI opens (you'll need a game under your belt to see anything). You can reset progress completely (and see this message again) with the "reset progress" button.
     
-You are certain to play games that you've never dreamed of, and as your skills progress
-the trianer will highlight your misconceptions... often in the form of humiliating, annoying, and sometimes even shocking fashion. That's okay though because that's how you learn.
-
-For instance, most folks castle because they're taught it's the right thing to do to protect your king. While this works effectively in human game play, it doesn't give you the visceral feeling of why it's so important to protect the king,
-because by the time you're good enough that you're habitually castling, you're never going to find a decent human player who marches their king out into the center of the board and still beats you. It's possible to find such players here. Playing against 
-such opponents exposes you to realms that no human player would (or even could). Now anyone can experience what it must've feel like to be a top player, playing against an ever-improving machine, all the while trianing yourself to be more superhuman at chess.
-
-That is why this training program is designed as it is. There is no time limit for you, there are no take-backs, no analysis. There's just playing chess against interesting opponents that are around your strength to make you better. 
-    
-    Good luck!""")
+Good luck!""")
     root.destroy()
-else:
-    # Os call to show the plot:
-    #os.system('start progression.png')
-    # Display a message box indicating your current level.
 
-    root = tk.Tk()
-    root.withdraw()
-    messagebox.showinfo("Level", "You are currently at level " + str(level) + " out of 100. Good luck!")
-    root.destroy()
 
 def noise_converter(level_in):
     return(np.exp((-level_in * 0.1535056728662697) - 3.8376418216567423))
