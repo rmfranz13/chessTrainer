@@ -8,9 +8,7 @@ It turns out most humans, myself included (especially myself) are simply unaware
 
 That is why this training program is designed as it is. There is no time limit, there are no take-backs, no analysis. There's just playing full games of chess, on a board, start to finish, the old fashioned way. Nobody knows the answers and mistakes have consequences.
 
-There's no resigning either. The AI can't feel anything, so there's no sense in being respectfule for it, and the point here is learning chess and where's the lesson in rage-quitting? That being said, you can always rage-quit by simply exiting out, but progress won't be made.
-
-Clicking "Ok" here will kick off the initial process of adding noise to the network to give you your first opponent. It will take a minute, printing out the 13 layers of the network which are having noise applied, before opening the chess GUI.
+There's no resigning either. The AI can't feel anything, so there's no sense in being respectful to it. The point here is learning chess and I think you'll find the engine can teach you something even in a hopelessly lost end game. That being said, you can always rage-quit by simply exiting out, but progress won't be made (or lost).
 
 Subsequent games should be kicked off the same as this first game, but you won't see this message again.
 
