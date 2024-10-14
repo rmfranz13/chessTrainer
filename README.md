@@ -27,6 +27,7 @@ And python for windows here: https://www.python.org/downloads/windows/
 Simply clone this repo and pip install the dependencies (there's only 2: python-chess for the chess-playing logic and certain aspects of the chess GUI, and protobuf which is needed to read and apply noise to the network weights for each game).
 ```
 git clone https://github.com/rmfranz13/chessTrainer.git
+cd chessTrainer
 pip install -r requirements.txt
 ```
 
